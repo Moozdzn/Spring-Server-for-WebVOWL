@@ -2,26 +2,28 @@ package com.webvowl.Server.models;
 
 public class Query {
 
-    //private Integer id;
     private String query;
+    private String owlFileName;
 
+    public Query(String query,String owlFileName){
+        this.query = query;
+        this.owlFileName = owlFileName;
+    }
     public Query(){}
 
-    //Integer id,
-    public Query( String query){
-        //this.id = id;
-        this.query = query;
-    }
-
-    //public Integer getId() { return id; }
-
-    //public void setId(Integer id) { this.id = id; }
-
     public String getQuery() {
-        return query;
+        return this.query;
     }
 
-    public void setQuery(String name) {
+    public void setQuery(String query) {
         this.query = query;
+    }
+
+    public String getOwlFileName() {
+        return this.owlFileName;
+    }
+
+    public void setOwlFileName(String owlFileName) {
+        this.owlFileName = owlFileName;
     }
 }

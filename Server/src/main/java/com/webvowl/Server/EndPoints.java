@@ -3,14 +3,8 @@ package com.webvowl.Server;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webvowl.Server.models.Query;
-import de.uni_stuttgart.vis.vowl.owl2vowl.Owl2Vowl;
-import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
-import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.swrlapi.sqwrl.SQWRLResult;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,25 +50,12 @@ public class EndPoints {
         fout.write(file.getBytes());
         fout.close();
 
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
-        OWLOntology ontology = null;
-        {
-            try {
-                ontology = ontologyManager.loadOntologyFromOntologyDocument(new File(pathToFile));
-                Owl2Vowl owl2Vowl = new Owl2Vowl(ontology);
-
-                String json = owl2Vowl.getJsonAsString();
-
-                System.out.println(json);
-            } catch (OWLOntologyCreationException e) {
-                e.printStackTrace();
-            }
-        }
+        Runtime.getRuntime().exec("java -jar ./owl2vowl/owl2vowl.jar -file "+pathToFile);
+        String content = new String(Files.readAllBytes(Paths.get("./PMOEA.json")));
+        System.out.println(content);
 
 
 
-
-
-        return new ResponseEntity<>("File is uploaded", HttpStatus.OK);
+        return new ResponseEntity<>(content, HttpStatus.OK);
     }
 }

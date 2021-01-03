@@ -11,10 +11,12 @@ import org.swrlapi.sqwrl.SQWRLResult;
 import org.swrlapi.sqwrl.exceptions.SQWRLException;
 
 import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class SWRLAPI {
     
-    static Object executeQuery(String query, String owlFileName){
+    public Serializable executeQuery(String query, String owlFileName){
         // Create OWLOntology instance using the OWLAPI
         OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
         OWLOntology ontology = null;
@@ -30,23 +32,21 @@ public class SWRLAPI {
         SQWRLQueryEngine queryEngine = SWRLAPIFactory.createSQWRLQueryEngine(ontology);
 
         // Create and execute a SQWRL query using the SWRLAPI
-        SQWRLResult result;
+        SQWRLResult result = null;
+
         {
             try {
                 result = queryEngine.runSQWRLQuery("q1",query);
-                System.out.println(result);
-                return result;
 
-                //if (result.next()) {
-                //    System.out.println("Name: " + result.getLiteral("x").getInteger());
-                //}
+
+                return result.getColumn(0).toString();
             } catch (SWRLParseException e) {
                 e.printStackTrace();
             } catch (SQWRLException e) {
                 e.printStackTrace();
             }
         }
-        return -1;
+        return "Malformed";
     }
     
 

@@ -3,6 +3,7 @@ package com.webvowl.Server;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webvowl.Server.models.Query;
+import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class EndPoints {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             method = RequestMethod.POST)
     //TODO: UPLOAD ONTOLOGY
-    public ResponseEntity<Object> uploadFile(@NotNull @RequestParam("file")MultipartFile file) throws IOException {
+    public ResponseEntity<Object> uploadFile(@NotNull @RequestParam("file")MultipartFile file) throws IOException, InterruptedException {
         String pathToFile = "..\\Server\\owlUpload\\" + file.getOriginalFilename();
         System.out.println(file.getOriginalFilename());
         File convertFile = new File(pathToFile);
@@ -45,12 +46,13 @@ public class EndPoints {
         fout.write(file.getBytes());
         fout.close();
 
-        Runtime.getRuntime().exec("java -jar ./owl2vowl/owl2vowl.jar -file "+pathToFile);
-        String content = new String(Files.readAllBytes(Paths.get("./PMOEA.json")));
-        File json = new File("PMOEA.json");
+        Process convertOWL2JSON = Runtime.getRuntime().exec("java -jar ./owl2vowl/owl2vowl.jar -file "+pathToFile);
+        Integer status = convertOWL2JSON.waitFor();
+        String fileName = FilenameUtils.removeExtension(file.getOriginalFilename());
+        System.out.println(fileName);
+        String content = new String(Files.readAllBytes(Paths.get("./"+fileName+".json")));
+        File json = new File(fileName+".json");
         json.delete();
-        System.out.println(content);
-
         return new ResponseEntity<>(content, HttpStatus.OK);
     }
 }

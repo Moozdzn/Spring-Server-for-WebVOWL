@@ -1,0 +1,10 @@
+version: '3'
+services:
+  webapp:
+    build: Client
+    ports:
+      - 80:80
+  server:
+    build: Server
+    ports:
+      - 8080:8080

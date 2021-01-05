@@ -22,7 +22,7 @@ public class SWRLAPI {
         OWLOntology ontology = null;
         {
             try {
-                ontology = ontologyManager.loadOntologyFromOntologyDocument(new File("..\\Server\\owlUpload\\"+owlFileName+".owl"));
+                ontology = ontologyManager.loadOntologyFromOntologyDocument(new File("./owl2vowl/"+owlFileName+".owl"));
             } catch (OWLOntologyCreationException e) {
                 e.printStackTrace();
             }

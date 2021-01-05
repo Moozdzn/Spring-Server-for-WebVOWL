@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 public class EndPoints {
@@ -38,7 +39,7 @@ public class EndPoints {
             method = RequestMethod.POST)
     //TODO: UPLOAD ONTOLOGY
     public ResponseEntity<Object> uploadFile(@NotNull @RequestParam("file")MultipartFile file) throws IOException, InterruptedException {
-        String pathToFile = "..\\Server\\owlUpload\\" + file.getOriginalFilename();
+        String pathToFile = "./owl2vowl/" + file.getOriginalFilename();
         System.out.println(file.getOriginalFilename());
         File convertFile = new File(pathToFile);
         convertFile.createNewFile();
@@ -46,13 +47,17 @@ public class EndPoints {
         fout.write(file.getBytes());
         fout.close();
 
+        TimeUnit.SECONDS.sleep(5);
+        File finalFile = new File(pathToFile);
+        boolean exists = finalFile.exists();
+        System.out.println(exists);
         Process convertOWL2JSON = Runtime.getRuntime().exec("java -jar ./owl2vowl/owl2vowl.jar -file "+pathToFile);
         Integer status = convertOWL2JSON.waitFor();
         String fileName = FilenameUtils.removeExtension(file.getOriginalFilename());
         System.out.println(fileName);
         String content = new String(Files.readAllBytes(Paths.get("./"+fileName+".json")));
-        File json = new File(fileName+".json");
-        json.delete();
+        //File json = new File(fileName+".json");
+        //json.delete();
         return new ResponseEntity<>(content, HttpStatus.OK);
     }
 }

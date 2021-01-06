@@ -47,7 +47,7 @@ public class EndPoints {
         fout.write(file.getBytes());
         fout.close();
 
-        TimeUnit.SECONDS.sleep(5);
+        TimeUnit.SECONDS.sleep(10);
         File finalFile = new File(pathToFile);
         boolean exists = finalFile.exists();
         System.out.println(exists);
@@ -56,8 +56,8 @@ public class EndPoints {
         String fileName = FilenameUtils.removeExtension(file.getOriginalFilename());
         System.out.println(fileName);
         String content = new String(Files.readAllBytes(Paths.get("./"+fileName+".json")));
-        //File json = new File(fileName+".json");
-        //json.delete();
+        File json = new File(fileName+".json");
+        json.delete();
         return new ResponseEntity<>(content, HttpStatus.OK);
     }
 }

@@ -1,4 +1,27 @@
-#ADS - Ontology Visualization
+# ADS - Ontology Visualization
+
+# Getting started
+Clone this repository to your local machine and open cmd in root directory.
+
+Run `docker-compose build` followed by `docker-compose up` and open http://localhost:80 
+
+You can run each container independently:
+
+/webapp
+```
+cd webapp
+docker build -t moozdzn/webapp .
+docker run -p 80:80 moozdzn/webapp
+```
+
+/Server
+```
+cd Server
+docker build -t moozdzn/spring .
+docker run -p 8080:8080 moozdzn/spring
+```
+
+Note: If issues arise when loading/uploading ontologies, try disabling CORS on your browser.
 
 # Server API Endpoints
 <table>
@@ -22,10 +45,19 @@
     </tr>
 </table>
 
-#Development
+# Project Architecture
+
+![Project Architecture](https://raw.githubusercontent.com/Moozdzn/Spring-Server-for-WebVOWL/main/Deliverable/Architecture.png)
+
+[SWRLAPI](https://github.com/protegeproject/swrlapi)
+
+[OWL2VOWL](https://github.com/VisualDataWeb/OWL2VOWL)
+
+
+# Development
 
 ## Client
-This repository contains solely the necessary client files for building and running docker. For source files and instructions on continuing development, please see the appropriate repository [msnnf-iscteiul/WebVOWL](https://github.com/msnnf-iscteiul/WebVOWL)
+This repository contains solely the necessary client files for building and running docker. For source files and instructions on continuing development, please see the appropriate repository at [msnnf-iscteiul/WebVOWL](https://github.com/msnnf-iscteiul/WebVOWL)
 ## Server
 Server developed with [Spring](https://spring.io/) and Java Version 8
 

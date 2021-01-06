@@ -13478,16 +13478,14 @@ webvowl =
 	      combinedClassesAndDatatypes = classes.concat(datatypes),
 	      unparsedProperties = ontologyData.property || [],
 	      combinedProperties;
-
-
+	    
 	    // Inject properties for unions, intersections, ...
 	    addSetOperatorProperties(combinedClassesAndDatatypes, unparsedProperties);
 	    combinedProperties = combineProperties(unparsedProperties, ontologyData.propertyAttribute);
 	    classMap = mapElements(combinedClassesAndDatatypes);
 	    propertyMap = mapElements(combinedProperties);
 	    mergeRangesOfEquivalentProperties(combinedProperties, combinedClassesAndDatatypes);
-
-
+	    
 	    // Process the graph data
 	    convertTypesToIris(combinedClassesAndDatatypes, ontologyData.namespace);
 	    convertTypesToIris(combinedProperties, ontologyData.namespace);
